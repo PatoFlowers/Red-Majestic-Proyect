@@ -12,6 +12,7 @@ como Naranja X, Mercado Pago y otras.
 Usted y su equipo de trabajo, fueron contratados para desarrollar la primera versión de
 este sistema de red como una prueba de concepto de las necesidades requeridas por
 parte de Red Majestic.
+
 Para ello, deberá diseñar una aplicación de consola, incorporando los conceptos
 aprendidos, considerando los fundamentos de programación orientados al lenguaje C#.
 Descripción del sistema a desarrollar
