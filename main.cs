@@ -1,16 +1,20 @@
 using System;
-class Program
+using System.Diagnostics;
+
+class Program // Completo hasta el requerimiento 9
 {
     public static void Main(string[] args)
     {
         //variables
         int opcionTarjeta;
         string[] nombreTarjetas = { "Visa", "Mastercard", "Diners Club" };
+        string numeroTarjeta = "";
         string identificador;
-        string digitosTarjeta = "";
+        string ultimosDigitos;
         bool validar = true;
         string nombreTarjetaSt;
 
+        // ------------------------------ 1 ----------------------------
         //Mensaje de inicio
         Console.WriteLine("Bienvenido a Red Majestic" +
                           "\nOperar con Visa - Ingrese 1" +
@@ -19,65 +23,89 @@ class Program
                           "\nIngrese su opción:");
 
         opcionTarjeta = Int32.Parse(Console.ReadLine());
-        nombreTarjetaSt = nombreTarjetas[opcionTarjeta];
+        try
+        {
+            // Código que puede generar una excepción
+            nombreTarjetaSt = nombreTarjetas[opcionTarjeta - 1];
+        }
+        catch (Exception exception)
+        {
+            // Manejo de la excepción
+            nombreTarjetaSt = "Sin Datos";
+        }
+
 
         while (validar) // Controlo que el numero ingresado sea igual a 16
         {
             Console.Clear();
             Console.WriteLine("--- RED MAJESTIC ---" +
-                              "\nTarjeta elegida: " + nombreTarjetas[opcionTarjeta - 1] +
+                              "\nTarjeta elegida: " + nombreTarjetaSt +
                               "\nIngrese los 16 digitos de la tarjeta: ");
-            digitosTarjeta = Console.ReadLine();
-            if (digitosTarjeta.Length == 16)
+            numeroTarjeta = Console.ReadLine();
+            if (numeroTarjeta.Length == 16)
             {
                 validar = false;
             }
         }
 
-        // separo los 4 primeros numeros de la tarjeta
-        identificador = digitosTarjeta.Substring(0, 4);
-        DigitosTarjeta(nombreTarjetaSt,identificador);
+        // separo los 4 primeros numeros de la tarjeta, y los ultimos
+        identificador = numeroTarjeta.Substring(0, 4);
+        ultimosDigitos = numeroTarjeta.Substring(numeroTarjeta.Length - 4);
+        DigitosTarjeta(nombreTarjetaSt,identificador, opcionTarjeta);
+        
+        // ------------------------------ 1 ----------------------------
+        // ------------------------------ 2 ----------------------------
+        // Listado de transacciones
 
 
-        //funcion para validar la tarjeta
-        static string ValidarTarjeta(int tarjeta, int id)
+        // ------------------------------ 2 
+
+
+
+        // comparo que los 4 digitos coincidan con la tarjeta elegida
+        static bool DigitosTarjeta(string tarNombre, string tarId, int tarNumOpcion)
         {
-
-            return "as";
-        }
-        // Muestro la tarjeta segun el codigo de 4 digitos -- Filtrar por la opcion de la tarjeta elegida
-        static string DigitosTarjeta(string tarjeta, string digitos)
-        {
-            switch (digitos)
+            switch(tarNumOpcion)
             {
-                case "4407":
-                    Console.WriteLine($"--- {tarjeta} ---");
-                    CuatroDigitos();
+                case 1: if (ValidarVisa(tarId)) { Console.WriteLine("Funciona visa"); } ;
                     break;
-                case "3890":
-                    Console.WriteLine($"--- {tarjeta} ---");
-                    CuatroDigitos();
+                case 2: if (ValidarMastercard(tarId)) { Console.WriteLine("Funciona master"); };
                     break;
-                case "7401":
-                    Console.WriteLine($"--- {tarjeta} ---");
-                    CuatroDigitos();
+                case 3: ValidarDinnersClub(tarId);
                     break;
-                default:
-                    Console.WriteLine("Los 4 primeros digitos de la tarjeta no coinciden");
+                default: Console.WriteLine("La opcion elegida no coincide. Intentelo mas tarde.");
                     break;
             }
 
-            string CuatroDigitos()
+            bool ValidarVisa(string tarjId)
             {
-                Console.WriteLine("Presione Enter para volver al menú principal");
-                Console.ReadLine();
-                Console.Clear(); // Limpiar la pantalla
+                string idLocal = "4407";
+                MensajeError(tarNumOpcion, idLocal, 1);
+                return (idLocal == tarjId);
+            }
+            bool ValidarMastercard(string tarjId)
+            {
+                string idLocal = "3890";
+                MensajeError(tarNumOpcion, idLocal, 2);
+                return (idLocal == tarjId);
+            }
+            bool ValidarDinnersClub(string tarjId)
+            {
+                string idLocal = "7401";
+                MensajeError(tarNumOpcion, idLocal, 3);
+                return (idLocal == tarjId);
+            }
+            string MensajeError(int opcionTar, string idLocal, int opciLocal)
+            {
+                if (opcionTar != opciLocal)
+                {
+                    Console.WriteLine("La opción ingresada no es válida. Inténtelo nuevamente más tarde.");
+                } else if(tarId != idLocal) {
+                    Console.WriteLine("El número de tarjeta ingresada no es válido.Inténtelo nuevamente más tarde.");
+                }
                 return "";
-
-                // siguiente: Mostrar transacciones de la tarjeta
             }
-            return"";
+            return false;
         }
     }
-    
 }
