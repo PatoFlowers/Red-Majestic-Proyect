@@ -1,6 +1,3 @@
-Aquí está el código modificado para incluir el requerimiento 10 que mencionaste:
-
-```csharp
 using System;
 using System.Diagnostics;
 
